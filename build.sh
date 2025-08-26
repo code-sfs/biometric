@@ -50,7 +50,7 @@ fi
 
 # Compile Java source files
 echo "🔨 Compiling Java source files..."
-javac -cp "$LIB_DIR/*" -source 8 -target 8 -d "$BUILD_DIR/classes" src/main/java/com/attendance/sync/*.java
+javac -cp "$LIB_DIR/*" -source 8 -target 8 -d "$BUILD_DIR/classes" src/main/java/com/attendance/sync/*.java src/main/java/com/attendance/sync/gui/*.java
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilation successful"
@@ -525,6 +525,73 @@ if "%1"=="" (
 endlocal
 EOF
 
+# Create Windows GUI startup script
+cat > "$PROD_DIR/bin/AttendanceSync-GUI.bat" << 'EOF'
+@echo off
+REM =================================================================
+REM AttendanceSync GUI Desktop Application
+REM =================================================================
+
+setlocal enabledelayedexpansion
+
+REM Set the application directory
+set "APP_DIR=%~dp0.."
+set "JAVA_OPTS=-Xms256m -Xmx512m"
+
+echo ===============================================
+echo   AttendanceSync Desktop Application
+echo ===============================================
+echo.
+echo Starting GUI application...
+
+REM Change to the correct directory
+cd /d "%APP_DIR%"
+
+REM Start the GUI application
+java %JAVA_OPTS% -cp "bin\AttendanceSync.jar;lib\*" com.attendance.sync.gui.AttendanceSyncLauncher
+
+REM Keep window open if there's an error
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo ===============================================
+    echo Application ended with error code %ERRORLEVEL%
+    echo Press any key to close this window...
+    echo ===============================================
+    pause >nul
+)
+EOF
+
+# Create Linux GUI startup script
+cat > "$PROD_DIR/bin/attendancesync-gui.sh" << 'EOF'
+#!/bin/bash
+
+# =================================================================
+# AttendanceSync GUI Desktop Application
+# =================================================================
+
+# Set the application directory
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+JAVA_OPTS="-Xms256m -Xmx512m"
+
+echo "==============================================="
+echo "  AttendanceSync Desktop Application"
+echo "==============================================="
+echo ""
+echo "Starting GUI application..."
+
+# Set environment variables if they exist
+if [ -f "$APP_DIR/config/environment.env" ]; then
+    echo "Loading environment variables from config/environment.env"
+    export $(grep -v '^#' "$APP_DIR/config/environment.env" | xargs)
+fi
+
+# Start the GUI application
+cd "$APP_DIR"
+java $JAVA_OPTS -cp "bin/AttendanceSync.jar:lib/*" com.attendance.sync.gui.AttendanceSyncLauncher
+
+exit $?
+EOF
+
 # Create Windows quick-start script for double-clicking
 cat > "$PROD_DIR/bin/Start-AttendanceSync.bat" << 'EOF'
 @echo off
@@ -556,7 +623,8 @@ EOF
 
 # Set proper permissions for Linux script
 chmod +x "$PROD_DIR/bin/attendancesync.sh"
-echo "✅ Startup scripts created (Linux and Windows)"
+chmod +x "$PROD_DIR/bin/attendancesync-gui.sh"
+echo "✅ Startup scripts created (Linux and Windows - Console & GUI)"
 
 # Create environment template
 echo "🔐 Creating environment template..."
@@ -652,6 +720,23 @@ Built on: $(date)
 Version: 2.0
 EOF
 
+# Create documentation files
+echo "📚 Creating documentation..."
+
+# Copy QUICK-START guide if it exists
+if [ -f "$PROD_DIR/QUICK-START.md" ]; then
+    echo "✅ QUICK-START.md already exists"
+else
+    echo "⚠️  QUICK-START.md not found, should be created manually"
+fi
+
+# Copy DESKTOP-APP-GUIDE if it exists  
+if [ -f "$PROD_DIR/DESKTOP-APP-GUIDE.md" ]; then
+    echo "✅ DESKTOP-APP-GUIDE.md already exists"
+else
+    echo "⚠️  DESKTOP-APP-GUIDE.md not found, should be created manually"
+fi
+
 # Set proper permissions
 echo "🔒 Setting permissions..."
 chmod +x "$PROD_DIR/bin/attendancesync.sh" 2>/dev/null || true
@@ -663,15 +748,18 @@ echo "🎉 Production Build Complete!"
 echo "============================================"
 echo "📍 Build Location: $PROD_DIR"
 echo "📦 JAR File: $PROD_DIR/bin/AttendanceSync.jar"
-echo "🔧 Linux Script: $PROD_DIR/bin/attendancesync.sh"
-echo "🔧 Windows Script: $PROD_DIR/bin/attendancesync.bat"
+echo "🔧 Linux Console: $PROD_DIR/bin/attendancesync.sh"
+echo "🔧 Windows Console: $PROD_DIR/bin/attendancesync.bat"
+echo "🖥️ Linux GUI: $PROD_DIR/bin/attendancesync-gui.sh"
+echo "�️ Windows GUI: $PROD_DIR/bin/AttendanceSync-GUI.bat"
+echo "🚀 Quick Start: $PROD_DIR/bin/Start-AttendanceSync.bat"
 echo "⚙️  Configuration: $PROD_DIR/config/"
 echo ""
 echo "🚀 To deploy:"
 echo "   1. Copy the entire '$PROD_DIR' directory to your production server"
 echo "   2. Configure settings in config/application.properties or environment.env"
 echo "   3. Linux/Unix: ./bin/attendancesync.sh start"
-echo "   4. Windows: Double-click Start-AttendanceSync.bat or run bin\\attendancesync.bat"
+echo "   4. Windows: Double-click Start-AttendanceSync.bat or AttendanceSync-GUI.bat"
 echo ""
 echo "💡 For help:"
 echo "   Linux/Unix: ./bin/attendancesync.sh"
