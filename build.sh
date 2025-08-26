@@ -50,7 +50,7 @@ fi
 
 # Compile Java source files
 echo "🔨 Compiling Java source files..."
-javac -cp "$LIB_DIR/*" -d "$BUILD_DIR/classes" src/main/java/com/attendance/sync/*.java
+javac -cp "$LIB_DIR/*" -source 8 -target 8 -d "$BUILD_DIR/classes" src/main/java/com/attendance/sync/*.java
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilation successful"
@@ -333,8 +333,8 @@ set "PID_FILE=%APP_DIR%\logs\attendancesync.pid"
 REM Ensure logs directory exists
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 
-REM Check command line argument
-if "%1"=="" goto usage
+REM Check command line argument - default to start if no argument provided
+if "%1"=="" goto start
 if "%1"=="start" goto start
 if "%1"=="stop" goto stop
 if "%1"=="restart" goto restart
@@ -342,6 +342,7 @@ if "%1"=="status" goto status
 if "%1"=="logs" goto logs
 if "%1"=="test-connection" goto test_connection
 if "%1"=="test-api" goto test_api
+if "%1"=="help" goto usage
 goto usage
 
 :start
@@ -512,7 +513,45 @@ echo.
 echo Example: attendancesync.bat start
 
 :end
+REM Keep console window open when run by double-clicking
+if "%1"=="" (
+    echo.
+    echo ===============================================
+    echo AttendanceSync session ended.
+    echo Press any key to close this window...
+    echo ===============================================
+    pause >nul
+)
 endlocal
+EOF
+
+# Create Windows quick-start script for double-clicking
+cat > "$PROD_DIR/bin/Start-AttendanceSync.bat" << 'EOF'
+@echo off
+REM =================================================================
+REM AttendanceSync Quick Start Script
+REM Double-click this file to start AttendanceSync
+REM =================================================================
+
+echo ===============================================
+echo   AttendanceSync - Quick Start
+echo ===============================================
+echo.
+echo Starting AttendanceSync application...
+echo.
+
+REM Change to the correct directory
+cd /d "%~dp0"
+
+REM Start AttendanceSync with default settings
+call attendancesync.bat start
+
+REM Keep window open
+echo.
+echo ===============================================
+echo Press any key to close this window...
+echo ===============================================
+pause >nul
 EOF
 
 # Set proper permissions for Linux script
@@ -632,8 +671,8 @@ echo "🚀 To deploy:"
 echo "   1. Copy the entire '$PROD_DIR' directory to your production server"
 echo "   2. Configure settings in config/application.properties or environment.env"
 echo "   3. Linux/Unix: ./bin/attendancesync.sh start"
-echo "   4. Windows: bin\\attendancesync.bat start"
+echo "   4. Windows: Double-click Start-AttendanceSync.bat or run bin\\attendancesync.bat"
 echo ""
 echo "💡 For help:"
 echo "   Linux/Unix: ./bin/attendancesync.sh"
-echo "   Windows: bin\\attendancesync.bat"
+echo "   Windows: See QUICK-START.md for detailed instructions"

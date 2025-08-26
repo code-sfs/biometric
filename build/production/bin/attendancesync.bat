@@ -14,8 +14,8 @@ set "PID_FILE=%APP_DIR%\logs\attendancesync.pid"
 REM Ensure logs directory exists
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 
-REM Check command line argument
-if "%1"=="" goto usage
+REM Check command line argument - default to start if no argument provided
+if "%1"=="" goto start
 if "%1"=="start" goto start
 if "%1"=="stop" goto stop
 if "%1"=="restart" goto restart
@@ -23,6 +23,7 @@ if "%1"=="status" goto status
 if "%1"=="logs" goto logs
 if "%1"=="test-connection" goto test_connection
 if "%1"=="test-api" goto test_api
+if "%1"=="help" goto usage
 goto usage
 
 :start
@@ -193,4 +194,13 @@ echo.
 echo Example: attendancesync.bat start
 
 :end
+REM Keep console window open when run by double-clicking
+if "%1"=="" (
+    echo.
+    echo ===============================================
+    echo AttendanceSync session ended.
+    echo Press any key to close this window...
+    echo ===============================================
+    pause >nul
+)
 endlocal
