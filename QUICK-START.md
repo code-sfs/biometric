@@ -9,7 +9,12 @@
 2. Double-click `AttendanceSync-GUI.bat`
 3. Choose "Start Desktop Application" from the launcher
 
-**Option 2: Command Line**
+**Option 2: Server Mode (Continuous Operation)**
+1. Navigate to the `bin` folder
+2. Double-click `AttendanceSync-Server.bat`
+3. Application will auto-minimize and run continuously
+
+**Option 3: Command Line**
 ```cmd
 cd bin
 attendancesync.bat start
@@ -21,6 +26,12 @@ attendancesync.bat start
 ```bash
 cd bin
 ./attendancesync-gui.sh
+```
+
+**Server Mode (Continuous Operation):**
+```bash
+cd bin
+./AttendanceSync-Server.sh
 ```
 
 **Console Application:**
@@ -46,6 +57,39 @@ cd bin
 - Routine "sleeping" messages
 - Configuration loading notifications
 - Verbose debug information
+
+## 🖥️ Server Mode (NEW!)
+
+### Continuous Operation for Servers
+
+**Server Mode Features:**
+- 🔄 **Runs continuously** until explicitly stopped
+- 🔁 **Auto-restart** if application crashes
+- 📍 **Auto-minimizes** to system tray
+- 🛡️ **No session timeout** - runs indefinitely
+- 📊 **Background monitoring** with live logs
+
+**For Windows Servers:**
+```cmd
+# Double-click this file for continuous operation
+AttendanceSync-Server.bat
+```
+
+**For Linux Servers:**
+```bash
+# Run this script for continuous operation
+./AttendanceSync-Server.sh
+
+# Or run in background with nohup
+nohup ./AttendanceSync-Server.sh &
+```
+
+**Server Mode Benefits:**
+- ✅ Application won't close after a few hours
+- ✅ Automatically restarts if it crashes
+- ✅ Minimizes to system tray (doesn't take screen space)
+- ✅ Logs all activity for monitoring
+- ✅ Can be accessed anytime via system tray
 
 ### Quick Demo
 
@@ -140,6 +184,13 @@ AttendanceSync-GUI.bat
 3. If database is OK, check **🌐 Test API**
 4. Review **Monitoring tab** for specific error messages
 
+### Problem: Application Closes After Few Hours
+**Quick Fix:**
+1. **Use Server Mode**: Run `AttendanceSync-Server.bat` (Windows) or `./AttendanceSync-Server.sh` (Linux)
+2. Server mode runs continuously and auto-restarts if needed
+3. Application minimizes to system tray but keeps running
+4. Check system tray for the application icon
+
 ### Problem: No Live Logs Appearing
 **Quick Fix:**
 1. Check "Live Monitoring" checkbox is enabled
@@ -168,6 +219,8 @@ AttendanceSync-GUI.bat
 - `bin/attendancesync.sh` - Linux script
 - `bin/attendancesync.bat` - Windows script
 - `bin/AttendanceSync-GUI.bat` - Windows GUI launcher
+- `bin/AttendanceSync-Server.bat` - **Windows Server Mode (NEW!)**
+- `bin/AttendanceSync-Server.sh` - **Linux Server Mode (NEW!)**
 
 ## 🔗 Integration Examples
 

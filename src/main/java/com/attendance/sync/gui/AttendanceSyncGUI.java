@@ -80,6 +80,7 @@ public class AttendanceSyncGUI extends JFrame {
     private int syncCount = 0;
     private int successCount = 0;
     private int errorCount = 0;
+    private boolean isServerMode = false;
     
     // Colors and fonts
     private static final Color PRIMARY_COLOR = new Color(52, 152, 219);
@@ -90,23 +91,60 @@ public class AttendanceSyncGUI extends JFrame {
     private static final Font NORMAL_FONT = new Font("Segoe UI", Font.PLAIN, 12);
     
     public AttendanceSyncGUI() {
+        this(false); // Default: not server mode
+    }
+    
+    public AttendanceSyncGUI(boolean serverMode) {
+        this.isServerMode = serverMode;
+        
+        // Set the application name for the taskbar and window manager
+        System.setProperty("java.awt.Window.locationByPlatform", "true");
+        
+        // For Windows - set taskbar grouping
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            System.setProperty("swing.useSystemUIFeedback", "true");
+            // This helps with Windows taskbar identification
+            System.setProperty("awt.useSystemAAFontSettings", "on");
+        }
+        
+        // For Linux window managers
+        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+            // Set WM_CLASS property for Linux window managers
+            try {
+                Class<?> xToolkit = Class.forName("sun.awt.X11.XToolkit");
+                java.lang.reflect.Field awtAppClassNameField = xToolkit.getDeclaredField("awtAppClassName");
+                awtAppClassNameField.setAccessible(true);
+                awtAppClassNameField.set(null, "AttendanceSync");
+            } catch (Exception e) {
+                // Ignore if not available
+            }
+        }
+        
         initializeGUI();
         loadConfiguration();
         setupSystemTray();
         startStatusTimer();
         startLiveLogMonitoring();
+        
+        if (serverMode) {
+            appendLog("🖥️ Started in Server Mode - Enhanced protection enabled");
+            appendLog("📌 GUI will remain visible for monitoring and control");
+        }
     }
     
     private void initializeGUI() {
-        setTitle("AttendanceSync Management Console");
+        // Set up the main window
+        setTitle("AttendanceSync - Live Monitor");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(1000, 700);
         setLocationRelativeTo(null);
         
+        // Set application name for taskbar - try multiple approaches
+        setName("AttendanceSync");
+        
         // Set application icon
         try {
-            ImageIcon icon = createApplicationIcon();
-            setIconImage(icon.getImage());
+            setIconImages(AppIcon.createIconList());
         } catch (Exception e) {
             System.err.println("Could not load application icon: " + e.getMessage());
         }
@@ -115,28 +153,78 @@ public class AttendanceSyncGUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (isServiceRunning) {
+                if (isServerMode) {
+                    // Server mode - show enhanced protection dialog
                     int option = JOptionPane.showConfirmDialog(
                         AttendanceSyncGUI.this,
-                        "AttendanceSync service is running. Do you want to:\n\n" +
-                        "• Minimize to system tray (Recommended)\n" +
-                        "• Stop service and exit\n" +
-                        "• Cancel",
-                        "Service Running",
+                        "⚠️ SERVER MODE - Application is running continuously!\n\n" +
+                        "Closing this window will stop the attendance synchronization service.\n" +
+                        "This may cause data loss and interrupt biometric sync operations.\n\n" +
+                        "Do you want to:\n\n" +
+                        "• Minimize to system tray (Keep running - RECOMMENDED)\n" +
+                        "• Force stop and exit (⚠️ WARNING: May cause data loss)\n" +
+                        "• Cancel (Keep window open)",
+                        "⚠️ Server Mode Protection",
                         JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE
+                        JOptionPane.WARNING_MESSAGE
                     );
                     
                     if (option == JOptionPane.YES_OPTION) {
                         minimizeToTray();
                     } else if (option == JOptionPane.NO_OPTION) {
-                        stopService();
+                        // Require double confirmation for server mode exit
+                        int confirmExit = JOptionPane.showConfirmDialog(
+                            AttendanceSyncGUI.this,
+                            "🛑 FINAL WARNING\n\n" +
+                            "Are you absolutely sure you want to stop the server?\n" +
+                            "This will interrupt all ongoing sync operations.\n\n" +
+                            "Type 'YES' to confirm shutdown:",
+                            "Confirm Server Shutdown",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        
+                        if (confirmExit == JOptionPane.YES_OPTION) {
+                            String userInput = JOptionPane.showInputDialog(
+                                AttendanceSyncGUI.this,
+                                "Type 'YES' to confirm server shutdown:",
+                                "Confirm Shutdown",
+                                JOptionPane.WARNING_MESSAGE
+                            );
+                            
+                            if ("YES".equals(userInput)) {
+                                stopService();
+                                stopLiveLogMonitoring();
+                                System.out.println("🛑 Server mode shutdown confirmed by user");
+                                System.exit(0);
+                            }
+                        }
+                    }
+                } else {
+                    // Normal mode - standard dialog
+                    if (isServiceRunning) {
+                        int option = JOptionPane.showConfirmDialog(
+                            AttendanceSyncGUI.this,
+                            "AttendanceSync service is running. Do you want to:\n\n" +
+                            "• Minimize to system tray (Recommended)\n" +
+                            "• Stop service and exit\n" +
+                            "• Cancel",
+                            "Service Running",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                        );
+                        
+                        if (option == JOptionPane.YES_OPTION) {
+                            minimizeToTray();
+                        } else if (option == JOptionPane.NO_OPTION) {
+                            stopService();
+                            stopLiveLogMonitoring();
+                            System.exit(0);
+                        }
+                    } else {
                         stopLiveLogMonitoring();
                         System.exit(0);
                     }
-                } else {
-                    stopLiveLogMonitoring();
-                    System.exit(0);
                 }
             }
         });
@@ -820,8 +908,8 @@ public class AttendanceSyncGUI extends JFrame {
             systemTray = SystemTray.getSystemTray();
             
             // Create tray icon
-            ImageIcon icon = createApplicationIcon();
-            trayIcon = new TrayIcon(icon.getImage(), "AttendanceSync");
+            Image trayImage = AppIcon.createTrayIcon();
+            trayIcon = new TrayIcon(trayImage, "AttendanceSync");
             trayIcon.setImageAutoSize(true);
             
             // Create popup menu
@@ -877,22 +965,6 @@ public class AttendanceSyncGUI extends JFrame {
             setVisible(false);
             trayIcon.displayMessage("AttendanceSync", "Application minimized to system tray", TrayIcon.MessageType.INFO);
         }
-    }
-    
-    private ImageIcon createApplicationIcon() {
-        // Create a simple icon programmatically
-        BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = image.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        // Draw a simple circular icon
-        g2d.setColor(PRIMARY_COLOR);
-        g2d.fillOval(2, 2, 12, 12);
-        g2d.setColor(Color.WHITE);
-        g2d.fillOval(6, 6, 4, 4);
-        
-        g2d.dispose();
-        return new ImageIcon(image);
     }
     
     // Additional utility methods
@@ -1098,14 +1170,21 @@ public class AttendanceSyncGUI extends JFrame {
                 Path logFilePath = Paths.get(Constants.DEFAULT_LOG_PATH);
                 Path logDir = logFilePath.getParent();
                 
+                // Debug: Show the paths being used
+                appendLog("🔍 Debug: Log file path: " + logFilePath.toAbsolutePath());
+                appendLog("🔍 Debug: Log directory: " + logDir.toAbsolutePath());
+                appendLog("🔍 Debug: Working directory: " + System.getProperty("user.dir"));
+                
                 // Create logs directory if it doesn't exist
                 if (!Files.exists(logDir)) {
                     Files.createDirectories(logDir);
+                    appendLog("📁 Created logs directory: " + logDir.toAbsolutePath());
                 }
                 
                 // Create log file if it doesn't exist
                 if (!Files.exists(logFilePath)) {
                     Files.createFile(logFilePath);
+                    appendLog("📄 Created log file: " + logFilePath.toAbsolutePath());
                 }
                 
                 logWatchService = FileSystems.getDefault().newWatchService();
@@ -1114,9 +1193,11 @@ public class AttendanceSyncGUI extends JFrame {
                 // Get initial file size
                 if (Files.exists(logFilePath)) {
                     lastLogFileSize = Files.size(logFilePath);
+                    appendLog("📏 Initial log file size: " + lastLogFileSize + " bytes");
                 }
                 
                 appendLog("🔴 Live log monitoring started");
+                appendLog("👀 Watching for changes to: " + logFilePath.getFileName());
                 
                 while (logMonitoringActive) {
                     WatchKey key = logWatchService.take();
@@ -1126,6 +1207,7 @@ public class AttendanceSyncGUI extends JFrame {
                             Path changed = (Path) event.context();
                             if (changed.toString().equals(logFilePath.getFileName().toString())) {
                                 // File was modified, read new content
+                                appendLog("📝 Log file changed detected");
                                 readNewLogContent(logFilePath);
                             }
                         }
@@ -1175,11 +1257,15 @@ public class AttendanceSyncGUI extends JFrame {
     private void readNewLogContent(Path logFilePath) {
         try {
             if (!Files.exists(logFilePath)) {
+                appendLog("⚠️ Log file not found: " + logFilePath.toAbsolutePath());
                 return;
             }
             
             long currentSize = Files.size(logFilePath);
+            appendLog("📊 File size check - Current: " + currentSize + ", Last: " + lastLogFileSize);
+            
             if (currentSize <= lastLogFileSize) {
+                appendLog("ℹ️ No new content in log file");
                 return; // No new content
             }
             
@@ -1188,9 +1274,14 @@ public class AttendanceSyncGUI extends JFrame {
                 file.seek(lastLogFileSize);
                 
                 String line;
+                int newLinesCount = 0;
+                int filteredLinesCount = 0;
+                
                 while ((line = file.readLine()) != null) {
+                    newLinesCount++;
                     final String logLine = line;
                     if (shouldShowLogLine(logLine)) {
+                        filteredLinesCount++;
                         SwingUtilities.invokeLater(() -> {
                             String timestamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
                             logTextArea.append("[" + timestamp + "] " + formatLogLine(logLine) + "\n");
@@ -1200,6 +1291,7 @@ public class AttendanceSyncGUI extends JFrame {
                 }
                 
                 lastLogFileSize = currentSize;
+                appendLog("✅ Processed " + newLinesCount + " new lines, showed " + filteredLinesCount + " filtered lines");
             }
             
         } catch (IOException e) {
@@ -1342,8 +1434,15 @@ public class AttendanceSyncGUI extends JFrame {
             System.err.println("Could not set look and feel: " + e.getMessage());
         }
         
+        // Check for server mode argument
+        boolean serverMode = false;
+        if (args.length > 0 && "server".equalsIgnoreCase(args[0])) {
+            serverMode = true;
+        }
+        
+        final boolean isServerMode = serverMode;
         SwingUtilities.invokeLater(() -> {
-            new AttendanceSyncGUI().setVisible(true);
+            new AttendanceSyncGUI(isServerMode).setVisible(true);
         });
     }
 }
