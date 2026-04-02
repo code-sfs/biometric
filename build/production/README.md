@@ -46,5 +46,5 @@
 
 Edit `config/application.properties` or use environment variables in `config/environment.env`
 
-Built on: Thu 04 Sep 2025 09:06:06 PM IST
+Built on: Thu Apr  2 10:25:13 AM IST 2026
 Version: 2.0

@@ -1,0 +1,96 @@
+Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+INFO: Configuration loaded successfully
+Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+INFO: School: DELHI PUBLIC SCHOOL, Indirapuram
+Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+INFO: Database: localhost:1433
+Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync manualSyncByDateRange
+INFO: MANUAL SYNC: date range Tue Aug 26 00:00:00 IST 2025 to Tue Aug 26 23:59:59 IST 2025 (all records, ignoring sync flag)
+Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync getConnection
+INFO: Database connection successful!
+Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: Sending attendance data to server for Machine: 106
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
+WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+INFO: API response: HTTP_ERROR_404
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
+WARNING: Network issue - will retry in next cycle
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
+WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
+Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync manualSyncByDateRange
+INFO: MANUAL SYNC finished: total=6 success=0 failed/skipped=6

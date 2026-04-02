@@ -22,6 +22,11 @@ public class Constants {
     public static final String FETCH_UNPROCESSED_RECORDS_SQL = 
         "SELECT MachineNo, CardNo, PunchDatetime FROM Tran_MachineRawPunch " +
         "WHERE (IsSync IS NULL OR IsSync = 0) ORDER BY PunchDatetime ASC";
+
+    /** All punches in inclusive datetime range (ignores IsSync — for manual re-sync). */
+    public static final String FETCH_RECORDS_BY_DATE_RANGE_SQL =
+        "SELECT MachineNo, CardNo, PunchDatetime FROM Tran_MachineRawPunch " +
+        "WHERE PunchDatetime >= ? AND PunchDatetime <= ? ORDER BY PunchDatetime ASC";
     
     public static final String UPDATE_PROCESSED_RECORD_SQL = 
         "UPDATE dbo.Tran_MachineRawPunch SET IsSync=1 " +

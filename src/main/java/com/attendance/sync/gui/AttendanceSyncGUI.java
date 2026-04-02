@@ -2,6 +2,7 @@ package com.attendance.sync.gui;
 
 import com.attendance.sync.AttendanceSync;
 import com.attendance.sync.Constants;
+import com.attendance.sync.ManualSyncResult;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -15,6 +16,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Timer;
@@ -67,6 +69,13 @@ public class AttendanceSyncGUI extends JFrame {
     private JTextField sleepIntervalField;
     private JTextField machineIdsField;
     private JCheckBox debugEnabledBox;
+
+    // Manual sync tab
+    private JSpinner manualSyncStartSpinner;
+    private JSpinner manualSyncEndSpinner;
+    private JButton manualSyncRunButton;
+    private JProgressBar manualSyncProgress;
+    private JTextArea manualSyncStatusArea;
     
     // Monitoring Panel
     private JTextArea logTextArea;
@@ -250,6 +259,7 @@ public class AttendanceSyncGUI extends JFrame {
         tabbedPane.addTab("📊 Monitoring", createMonitoringPanel());
         tabbedPane.addTab("📈 Statistics", createStatisticsPanel());
         tabbedPane.addTab("🔧 Tools", createToolsPanel());
+        tabbedPane.addTab("📅 Manual Sync", createManualSyncPanel());
         
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
         
@@ -553,6 +563,146 @@ public class AttendanceSyncGUI extends JFrame {
         toolsPanel.add(importConfigButton, gbc);
         
         return toolsPanel;
+    }
+
+    private JPanel createManualSyncPanel() {
+        JPanel panel = new JPanel(new BorderLayout(12, 12));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel intro = new JLabel(
+            "<html><body style='width: 520px'>" +
+            "Select an inclusive date range. All punch rows in <b>Tran_MachineRawPunch</b> for those calendar days are loaded " +
+            "<b>regardless of IsSync</b>, sent to the API, and marked synced when the server accepts the record " +
+            "(same rules as automatic sync). " +
+            "Save configuration first if you changed database or API settings.</body></html>");
+        intro.setFont(NORMAL_FONT);
+        panel.add(intro, BorderLayout.NORTH);
+
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setBorder(new TitledBorder("Date range (inclusive)"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date endDay = cal.getTime();
+        cal.add(Calendar.DAY_OF_MONTH, -7);
+        Date startDay = cal.getTime();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        form.add(new JLabel("Start date:"), gbc);
+        gbc.gridx = 1;
+        manualSyncStartSpinner = new JSpinner(new SpinnerDateModel(startDay, null, null, Calendar.DAY_OF_MONTH));
+        JSpinner.DateEditor startEd = new JSpinner.DateEditor(manualSyncStartSpinner, "yyyy-MM-dd");
+        manualSyncStartSpinner.setEditor(startEd);
+        form.add(manualSyncStartSpinner, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        form.add(new JLabel("End date:"), gbc);
+        gbc.gridx = 1;
+        manualSyncEndSpinner = new JSpinner(new SpinnerDateModel(endDay, null, null, Calendar.DAY_OF_MONTH));
+        JSpinner.DateEditor endEd = new JSpinner.DateEditor(manualSyncEndSpinner, "yyyy-MM-dd");
+        manualSyncEndSpinner.setEditor(endEd);
+        form.add(manualSyncEndSpinner, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        manualSyncRunButton = createStyledButton("▶ Sync attendance for selected range", SUCCESS_COLOR);
+        manualSyncRunButton.addActionListener(e -> runManualDateRangeSync());
+        form.add(manualSyncRunButton, gbc);
+
+        gbc.gridy++;
+        manualSyncProgress = new JProgressBar();
+        manualSyncProgress.setStringPainted(true);
+        manualSyncProgress.setString("Idle");
+        manualSyncProgress.setVisible(false);
+        form.add(manualSyncProgress, gbc);
+
+        panel.add(form, BorderLayout.CENTER);
+
+        manualSyncStatusArea = new JTextArea(8, 50);
+        manualSyncStatusArea.setFont(new Font("Consolas", Font.PLAIN, 12));
+        manualSyncStatusArea.setEditable(false);
+        manualSyncStatusArea.setLineWrap(true);
+        manualSyncStatusArea.setWrapStyleWord(true);
+        manualSyncStatusArea.setText("Results will appear here.\n");
+        JScrollPane statusScroll = new JScrollPane(manualSyncStatusArea);
+        statusScroll.setBorder(new TitledBorder("Last run"));
+        panel.add(statusScroll, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    private void runManualDateRangeSync() {
+        Date start = (Date) manualSyncStartSpinner.getValue();
+        Date end = (Date) manualSyncEndSpinner.getValue();
+        if (start.after(end)) {
+            JOptionPane.showMessageDialog(this,
+                "Start date must be on or before end date.",
+                "Invalid range",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        manualSyncRunButton.setEnabled(false);
+        manualSyncProgress.setVisible(true);
+        manualSyncProgress.setIndeterminate(true);
+        manualSyncProgress.setString("Syncing…");
+        appendLog("📅 Manual sync started (range " + new SimpleDateFormat("yyyy-MM-dd").format(start) + " … " + new SimpleDateFormat("yyyy-MM-dd").format(end) + ")");
+
+        SwingWorker<ManualSyncResult, Void> worker = new SwingWorker<ManualSyncResult, Void>() {
+            @Override
+            protected ManualSyncResult doInBackground() {
+                AttendanceSync sync = new AttendanceSync();
+                return sync.manualSyncByDateRange(start, end);
+            }
+
+            @Override
+            protected void done() {
+                manualSyncRunButton.setEnabled(true);
+                manualSyncProgress.setIndeterminate(false);
+                manualSyncProgress.setVisible(false);
+                manualSyncProgress.setString("Idle");
+                try {
+                    ManualSyncResult r = get();
+                    if (r.hasFatalError()) {
+                        String msg = r.getErrorMessage() != null ? r.getErrorMessage() : "Unknown error";
+                        manualSyncStatusArea.setText("Error: " + msg + "\n");
+                        appendLog("❌ Manual sync failed: " + msg);
+                        JOptionPane.showMessageDialog(AttendanceSyncGUI.this,
+                            "Manual sync failed:\n" + msg,
+                            "Manual sync",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    String summary = String.format(
+                        "Finished.%nTotal rows: %d%nAccepted by server (marked synced): %d%nNot accepted / skipped: %d%n",
+                        r.getTotalRecords(), r.getSuccessCount(), r.getFailedCount());
+                    manualSyncStatusArea.setText(summary);
+                    appendLog("✅ Manual sync finished: total=" + r.getTotalRecords()
+                        + " ok=" + r.getSuccessCount() + " not ok=" + r.getFailedCount());
+                    JOptionPane.showMessageDialog(AttendanceSyncGUI.this,
+                        summary,
+                        "Manual sync complete",
+                        JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    manualSyncStatusArea.setText("Error: " + e.getMessage());
+                    appendLog("❌ Manual sync error: " + e.getMessage());
+                    JOptionPane.showMessageDialog(AttendanceSyncGUI.this,
+                        "Manual sync error: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+        worker.execute();
     }
     
     private JPanel createStatusBar() {

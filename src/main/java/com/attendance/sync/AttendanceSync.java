@@ -8,7 +8,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -277,7 +279,7 @@ public class AttendanceSync implements Runnable {
           if (appConfig.isDebugEnabled()) {
             e.printStackTrace();
           }
-        } 
+        }
       } 
       
       logger.info("Total records processed: " + recordCount);
@@ -302,19 +304,139 @@ public class AttendanceSync implements Runnable {
   }
   
   /**
-   * Process individual attendance record
+   * Manual sync: fetch all punches in [startOfDay(startDate), endOfDay(endDate)] and send each to the API
+   * (includes rows already marked synced). Successful API responses still update IsSync when applicable.
    */
-  private void processRecord(ResultSet rs, Connection con) throws Exception {
-    // Extract data from result set
-    String machineId = rs.getString("MachineNo");
-    String cardNo = rs.getString("CardNo");
-    String punchDateTime = rs.getString("PunchDatetime");
-    
+  public synchronized ManualSyncResult manualSyncByDateRange(Date startDate, Date endDate) {
+    ManualSyncResult result = new ManualSyncResult();
+    Date rangeStart = startOfDay(startDate);
+    Date rangeEnd = endOfDay(endDate);
+    if (rangeStart.after(rangeEnd)) {
+      result.setErrorMessage("Start date must be on or before end date.");
+      return result;
+    }
+
+    logger.info("MANUAL SYNC: date range " + rangeStart + " to " + rangeEnd + " (all records, ignoring sync flag)");
+
+    Connection con = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+      con = getConnection();
+      if (con == null) {
+        result.setErrorMessage("Database connection failed.");
+        return result;
+      }
+
+      ps = con.prepareStatement(Constants.FETCH_RECORDS_BY_DATE_RANGE_SQL);
+      ps.setTimestamp(1, new Timestamp(rangeStart.getTime()));
+      ps.setTimestamp(2, new Timestamp(rangeEnd.getTime()));
+      rs = ps.executeQuery();
+
+      int success = 0;
+      int failed = 0;
+      int total = 0;
+
+      while (rs.next()) {
+        total++;
+        if (processRecord(rs, con)) {
+          success++;
+        } else {
+          failed++;
+        }
+      }
+
+      result.setTotalRecords(total);
+      result.setSuccessCount(success);
+      result.setFailedCount(failed);
+      logger.info("MANUAL SYNC finished: total=" + total + " success=" + success + " failed/skipped=" + failed);
+
+    } catch (Exception e) {
+      logger.severe("MANUAL SYNC failed: " + e.getMessage());
+      if (appConfig.isDebugEnabled()) {
+        e.printStackTrace();
+      }
+      result.setErrorMessage(e.getMessage());
+    } finally {
+      if (rs != null) {
+        try {
+          rs.close();
+        } catch (SQLException ignored) {
+        }
+      }
+      if (ps != null) {
+        try {
+          ps.close();
+        } catch (SQLException ignored) {
+        }
+      }
+      if (con != null) {
+        try {
+          con.close();
+        } catch (SQLException e) {
+          logger.warning("Error closing connection: " + e.getMessage());
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private static Date startOfDay(Date d) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(d);
+    c.set(Calendar.HOUR_OF_DAY, 0);
+    c.set(Calendar.MINUTE, 0);
+    c.set(Calendar.SECOND, 0);
+    c.set(Calendar.MILLISECOND, 0);
+    return c.getTime();
+  }
+
+  private static Date endOfDay(Date d) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(d);
+    c.set(Calendar.HOUR_OF_DAY, 23);
+    c.set(Calendar.MINUTE, 59);
+    c.set(Calendar.SECOND, 59);
+    c.set(Calendar.MILLISECOND, 997);
+    return c.getTime();
+  }
+
+  /**
+   * Process individual attendance record.
+   *
+   * @return true if the server accepted the punch and the row was marked processed
+   */
+  private boolean processRecord(ResultSet rs, Connection con) {
+    String machineId;
+    String cardNo;
+    String punchDateTime;
+    try {
+      machineId = rs.getString("MachineNo");
+      cardNo = rs.getString("CardNo");
+      punchDateTime = rs.getString("PunchDatetime");
+    } catch (SQLException e) {
+      logger.severe("Error reading punch row: " + e.getMessage());
+      return false;
+    }
+
     // Format data
-    Date dateObject = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(punchDateTime);
-    String formattedDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dateObject);
-    String formattedCardNo = String.format("%08d", Integer.parseInt(cardNo));
-    
+    Date dateObject;
+    try {
+      dateObject = new SimpleDateFormat(Constants.INPUT_DATE_FORMAT).parse(punchDateTime);
+    } catch (java.text.ParseException e) {
+      logger.severe("Bad punch datetime: " + punchDateTime + " — " + e.getMessage());
+      return false;
+    }
+    String formattedDateTime = new SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT).format(dateObject);
+    String formattedCardNo;
+    try {
+      formattedCardNo = String.format(Constants.CARD_NUMBER_FORMAT, Integer.parseInt(cardNo));
+    } catch (NumberFormatException e) {
+      logger.severe("Bad card number: " + cardNo);
+      return false;
+    }
+
     logger.info("Processing: Employee " + formattedCardNo + " at " + formattedDateTime + " on Machine " + machineId);
     
     // Create JSON payload
@@ -345,18 +467,22 @@ public class AttendanceSync implements Runnable {
       if (shouldUpdate) {
         updateDatabase(con, punchDateTime, cardNo, machineId);
         logger.info("✅ Record successfully synced for Employee " + formattedCardNo);
+        return true;
       } else {
         logger.warning("⚠️  Record not synced - will retry in next cycle for Employee " + formattedCardNo);
+        return false;
       }
     } catch (IllegalArgumentException e) {
       logger.warning("❌ Configuration issue: " + e.getMessage());
       logger.warning("⚠️  Skipping record for Employee " + formattedCardNo + " - check machine.ids configuration");
+      return false;
     } catch (Exception e) {
       logger.severe("❌ Error sending data to server: " + e.getMessage());
       if (appConfig.isDebugEnabled()) {
         e.printStackTrace();
       }
       logger.warning("⚠️  Record not synced - will retry in next cycle for Employee " + formattedCardNo);
+      return false;
     }
   }
   
