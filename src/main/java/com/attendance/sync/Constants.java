@@ -19,9 +19,11 @@ public class Constants {
     public static final String DB_URL_TEMPLATE = "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=false;trustServerCertificate=true;integratedSecurity=false;applicationIntent=ReadWrite;loginTimeout=30;";
     
     // SQL Queries
+    /** Unsynced punches for today only (automatic background sync). */
     public static final String FETCH_UNPROCESSED_RECORDS_SQL = 
         "SELECT MachineNo, CardNo, PunchDatetime FROM Tran_MachineRawPunch " +
-        "WHERE (IsSync IS NULL OR IsSync = 0) ORDER BY PunchDatetime ASC";
+        "WHERE (IsSync IS NULL OR IsSync = 0) AND PunchDatetime >= ? AND PunchDatetime <= ? " +
+        "ORDER BY PunchDatetime ASC";
 
     /** All punches in inclusive datetime range (ignores IsSync — for manual re-sync). */
     public static final String FETCH_RECORDS_BY_DATE_RANGE_SQL =

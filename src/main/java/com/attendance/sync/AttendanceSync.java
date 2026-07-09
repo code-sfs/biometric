@@ -253,21 +253,28 @@ public class AttendanceSync implements Runnable {
   }
   
   /**
-   * Fetch and process attendance records
+   * Fetch and process today's unsynced attendance records (automatic sync loop).
+   * Older dates are only synced via {@link #manualSyncByDateRange(Date, Date)}.
    */
   public synchronized void fetchRecord() throws SQLException {
     Connection con = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
     try {
       con = getConnection();
       if (con == null) {
         logger.severe(Constants.ERROR_DB_NULL);
         return;
       }
-      
-      String sql = Constants.FETCH_UNPROCESSED_RECORDS_SQL;
-      
-      PreparedStatement ps = con.prepareStatement(sql);
-      ResultSet rs = ps.executeQuery();
+
+      Date todayStart = startOfDay(new Date());
+      Date todayEnd = endOfDay(new Date());
+      logger.info("AUTO SYNC: fetching unprocessed records for today only (" + todayStart + " to " + todayEnd + ")");
+
+      ps = con.prepareStatement(Constants.FETCH_UNPROCESSED_RECORDS_SQL);
+      ps.setTimestamp(1, new Timestamp(todayStart.getTime()));
+      ps.setTimestamp(2, new Timestamp(todayEnd.getTime()));
+      rs = ps.executeQuery();
       
       int recordCount = 0;
       while (rs.next()) {
@@ -284,15 +291,27 @@ public class AttendanceSync implements Runnable {
       
       logger.info("Total records processed: " + recordCount);
       if (recordCount == 0) {
-        logger.info("No unprocessed records found");
+        logger.info("No unprocessed records found for today");
       }
-      
+
     } catch (Exception e) {
       logger.severe("Exception in fetchRecord(): " + e.getMessage());
       if (appConfig.isDebugEnabled()) {
         e.printStackTrace();
       }
     } finally {
+      if (rs != null) {
+        try {
+          rs.close();
+        } catch (SQLException ignored) {
+        }
+      }
+      if (ps != null) {
+        try {
+          ps.close();
+        } catch (SQLException ignored) {
+        }
+      }
       if (con != null) {
         try {
           con.close();

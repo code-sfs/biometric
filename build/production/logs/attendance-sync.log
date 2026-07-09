@@ -1,96 +1,248 @@
-Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+Jul 09, 2026 12:34:15 PM com.attendance.sync.AttendanceSync loadConfiguration
 INFO: Configuration loaded successfully
-Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+Jul 09, 2026 12:34:15 PM com.attendance.sync.AttendanceSync loadConfiguration
 INFO: School: DELHI PUBLIC SCHOOL, Indirapuram
-Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync loadConfiguration
+Jul 09, 2026 12:34:15 PM com.attendance.sync.AttendanceSync loadConfiguration
 INFO: Database: localhost:1433
-Apr 02, 2026 10:28:15 AM com.attendance.sync.AttendanceSync manualSyncByDateRange
-INFO: MANUAL SYNC: date range Tue Aug 26 00:00:00 IST 2025 to Tue Aug 26 23:59:59 IST 2025 (all records, ignoring sync flag)
-Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync getConnection
-INFO: Database connection successful!
-Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:16 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Processing: Employee 00030172 at 26-08-2025 09:08:00 on Machine 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: Sending attendance data to server for Machine: 106
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-INFO: Sending request to: https://api.eduacademics.com/v1/guests/StaffBiomatricPunch?school_code=indp&attendancedata=%7B%22data%22%3A%5B%7B%22datetime%22%3A%2226-08-2025+09%3A08%3A00%22%2C%22school_code%22%3A%22indp%22%2C%22biomatric_code%22%3A%2200030172%22%7D%5D%7D
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync hitServer
-WARNING: HTTP Error 404: status code: 404, reason phrase: Not Found
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-INFO: API response: HTTP_ERROR_404
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync analyzeResponse
-WARNING: Network issue - will retry in next cycle
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync processRecord
-WARNING: ⚠️  Record not synced - will retry in next cycle for Employee 00030172
-Apr 02, 2026 10:28:17 AM com.attendance.sync.AttendanceSync manualSyncByDateRange
-INFO: MANUAL SYNC finished: total=6 success=0 failed/skipped=6
+Jul 09, 2026 12:34:15 PM com.attendance.sync.AttendanceSync run
+INFO: AttendanceSync started for DELHI PUBLIC SCHOOL, Indirapuram
+Jul 09, 2026 12:34:15 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:34:45 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:34:45 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:34:45 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:35:45 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:36:15 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:36:15 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:36:15 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:37:15 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:37:44 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:37:44 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:37:44 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:38:44 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:39:14 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:39:14 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:39:14 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:40:14 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:40:43 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:40:43 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:40:43 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:41:43 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:42:13 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:42:13 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:42:13 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:43:13 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:43:42 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:43:42 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:43:42 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:44:42 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:45:12 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:45:12 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:45:12 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:46:12 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:46:41 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:46:41 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:46:41 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:47:41 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:48:11 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:48:11 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:48:11 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:49:11 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:49:40 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:49:40 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:49:40 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:50:40 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:51:10 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:51:10 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:51:10 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:52:10 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:52:40 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:52:40 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:52:40 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:53:40 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:54:09 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:54:09 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:54:09 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:55:09 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:55:39 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:55:39 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:55:39 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:56:39 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:57:08 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:57:08 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:57:08 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:58:08 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 12:58:38 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 12:58:38 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 12:58:38 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 12:59:38 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:00:07 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:00:07 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:00:07 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:01:07 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:01:37 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:01:37 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:01:37 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:02:37 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:03:06 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:03:06 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:03:06 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:04:06 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:04:36 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:04:36 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:04:36 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:05:36 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:06:05 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:06:05 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:06:05 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:07:05 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:07:35 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:07:35 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:07:35 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:08:35 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:09:04 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:09:04 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:09:04 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:10:04 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:10:34 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:10:34 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:10:34 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:11:34 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:12:03 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:12:03 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:12:03 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:13:03 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:13:33 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:13:33 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:13:33 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:17:31 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:18:01 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:18:01 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:18:01 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:19:01 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:19:30 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:19:30 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:19:30 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
+Jul 09, 2026 1:20:30 PM com.attendance.sync.AttendanceSync run
+INFO: Starting sync cycle...
+Jul 09, 2026 1:21:00 PM com.attendance.sync.AttendanceSync getConnection
+SEVERE: Database connection failed: The TCP/IP connection to the host localhost, port 1433 has failed. Error: "Connection refused. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Jul 09, 2026 1:21:00 PM com.attendance.sync.AttendanceSync fetchRecord
+SEVERE: Database connection is null, cannot proceed!
+Jul 09, 2026 1:21:00 PM com.attendance.sync.AttendanceSync run
+INFO: Sleeping for 60 seconds...
